@@ -1,6 +1,8 @@
 package rest
 
 import (
+	"fmt"
+
 	"github.com/bignuttawuts/go-async-job-application-api/config"
 	"github.com/bignuttawuts/go-async-job-application-api/internal/usecases"
 	"github.com/gofiber/fiber/v3"
@@ -27,13 +29,13 @@ func (s *Server) buildConfig() fiber.Config {
 		// DisableStartupMessage: true,
 		Immutable: true,
 		BodyLimit: 10 * 1024 * 1024, // 10MB
-		// Prefork: //s.config.Prefork,
-		ReadTimeout:  s.config.ReadTimeout,
-		WriteTimeout: s.config.WriteTimeout,
+		// Prefork: //s.config.Server.Prefork,
+		ReadTimeout:  s.config.Server.ReadTimeout,
+		WriteTimeout: s.config.Server.WriteTimeout,
 	}
 }
 
 func (s *Server) ListenAndServe() error {
 	s.routes()
-	return s.app.Listen(s.config.Port)
+	return s.app.Listen(fmt.Sprintf(":%s", s.config.Server.Port))
 }
