@@ -2,16 +2,22 @@ package rest
 
 import (
 	"github.com/bignuttawuts/go-async-job-application-api/config"
+	"github.com/bignuttawuts/go-async-job-application-api/internal/usecases"
 	"github.com/gofiber/fiber/v3"
 )
 
 type Server struct {
 	app    *fiber.App
 	config config.Config
+	uc     *UseCases
 }
 
-func NewServer(config config.Config) *Server {
-	s := &Server{config: config}
+type UseCases struct {
+	CreateApplicationUsecase *usecases.CreateApplicationUsecase
+}
+
+func NewServer(uc *UseCases, config config.Config) *Server {
+	s := &Server{uc: uc, config: config}
 	s.app = fiber.New(s.buildConfig())
 	return s
 }
